@@ -2,8 +2,9 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { FreelanceMarketplace } from "../typechain-types";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { describe, beforeEach, it } from "node:test";
 
-describe("FreelanceMarketplace - Complete Test Suite", function () {
+describe("FreelanceMarketplace - Modular Architecture Test Suite", function () {
   let marketplace: FreelanceMarketplace;
   let owner: SignerWithAddress;
   let client: SignerWithAddress;
@@ -20,12 +21,13 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
   beforeEach(async function () {
     [owner, client, freelancer, freelancer2, arbitrator, ...addrs] = await ethers.getSigners();
 
+    // Deploy the main contract which inherits all modular functionality
     const FreelanceMarketplace = await ethers.getContractFactory("FreelanceMarketplace");
     marketplace = await FreelanceMarketplace.deploy();
     await marketplace.deployed();
   });
 
-  describe("🚀 Deployment", function () {
+  describe("🚀 Deployment & Architecture", function () {
     it("Should deploy with correct initial state", async function () {
       expect(await marketplace.owner()).to.equal(owner.address);
       expect(await marketplace.platformFee()).to.equal(250); // 2.5%
@@ -45,9 +47,18 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
       
       expect(await ethers.provider.getBalance(marketplace.address)).to.equal(ethers.utils.parseEther("1"));
     });
+
+    it("Should have all inherited functionality available", async function () {
+      // Test that all main functions from different modules are available
+      expect(marketplace.registerUser).to.exist;
+      expect(marketplace.postJob).to.exist;
+      expect(marketplace.submitProposal).to.exist;
+      expect(marketplace.createMilestone).to.exist;
+      expect(marketplace.raiseDispute).to.exist;
+    });
   });
 
-  describe("👥 User Management", function () {
+  describe("👥 User Management Module", function () {
     it("Should register a new user", async function () {
       await expect(marketplace.connect(client).registerUser(PROFILE_HASH))
         .to.emit(marketplace, "UserRegistered")
@@ -112,7 +123,7 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
     });
   });
 
-  describe("💼 Job Management", function () {
+  describe("💼 Job Management Module", function () {
     beforeEach(async function () {
       await marketplace.connect(client).registerUser(PROFILE_HASH);
       await marketplace.connect(freelancer).registerUser(PROFILE_HASH);
@@ -269,7 +280,7 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
     });
   });
 
-  describe("📝 Proposal Management", function () {
+  describe("📝 Proposal Management Module", function () {
     let jobId: number;
 
     beforeEach(async function () {
@@ -401,7 +412,7 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
     });
   });
 
-  describe("🎯 Milestone & Escrow System", function () {
+  describe("🎯 Milestone & Escrow Management Module", function () {
     let jobId: number;
 
     beforeEach(async function () {
@@ -621,7 +632,7 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
     });
   });
 
-  describe("⚖️ Dispute Resolution", function () {
+  describe("⚖️ Dispute Resolution Module", function () {
     let jobId: number;
     let milestoneId: number;
 
@@ -1008,6 +1019,23 @@ describe("FreelanceMarketplace - Complete Test Suite", function () {
 
       const user = await marketplace.users(freelancer.address);
       expect(user.reputation).to.be.gt(500); // Should increase from initial 500
+    });
+
+    it("Should validate modular architecture integrity", async function () {
+      // Test that inheritance works correctly
+      expect(marketplace.registerUser).to.exist;
+      expect(marketplace.postJob).to.exist;
+      expect(marketplace.submitProposal).to.exist;
+      expect(marketplace.createMilestone).to.exist;
+      expect(marketplace.raiseDispute).to.exist;
+      expect(marketplace.updatePlatformFee).to.exist;
+      
+      // All functions should be accessible from the main contract
+      const contractMethods = Object.getOwnPropertyNames(marketplace).filter(
+        method => typeof marketplace[method] === 'function'
+      );
+      
+      expect(contractMethods.length).to.be.greaterThan(20); // Should have all inherited methods
     });
   });
 });
