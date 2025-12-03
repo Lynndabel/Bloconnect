@@ -19,7 +19,7 @@ describe("FreelanceMarketplace - Modular Architecture Test Suite", function () {
   const MILESTONE_DESCRIPTION_HASH = "QmMilestone101";
 
   beforeEach(async function () {
-    [owner, client, freelancer, freelancer2, arbitrator, ...addrs] = await ethers.getSigners();
+    [client, freelancer, freelancer2, arbitrator, ...addrs] = await ethers.getSigners();
 
     // Deploy the main contract which inherits all modular functionality
     const FreelanceMarketplace = await ethers.getContractFactory("FreelanceMarketplace");
@@ -27,7 +27,7 @@ describe("FreelanceMarketplace - Modular Architecture Test Suite", function () {
     await marketplace.deployed();
   });
 
-  describe("🚀 Deployment & Architecture", function () {
+  describe(" Deployment & Architecture", function () {
     it("Should deploy with correct initial state", async function () {
       expect(await marketplace.owner()).to.equal(owner.address);
       expect(await marketplace.platformFee()).to.equal(250); // 2.5%
@@ -49,7 +49,7 @@ describe("FreelanceMarketplace - Modular Architecture Test Suite", function () {
     });
 
     it("Should have all inherited functionality available", async function () {
-      // Test that all main functions from different modules are available
+      
       expect(marketplace.registerUser).to.exist;
       expect(marketplace.postJob).to.exist;
       expect(marketplace.submitProposal).to.exist;
@@ -171,7 +171,7 @@ describe("FreelanceMarketplace - Modular Architecture Test Suite", function () {
         )
       ).to.be.revertedWith("Title cannot be empty");
 
-      // Zero budget
+      
       await expect(
         marketplace.connect(client).postJob(
           "Test Job",
