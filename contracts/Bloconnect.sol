@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 /// @title Bloconnect - Artisan registry, job payment, and escrow contract
 /// @notice Supports job creation, verification, cancellation, dispute resolution, and timeouts.
-contract AnyworkMarketplace {
+contract Bloconnect {
     // --- Ownership & Platform Config ---
 
     address public owner;
