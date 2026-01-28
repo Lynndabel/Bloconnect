@@ -47,15 +47,16 @@ export default function RootLayout({
         </Script>
         <div className="mx-auto max-w-7xl px-6">
           <header className="flex items-center justify-between py-5">
-            <Link href="/" className="flex items-center gap-2 text-base font-semibold">
+            <Link href="/" className="flex items-center gap-2 text-base font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 rounded">
               <span className="inline-flex h-6 w-6 items-center justify-center rounded bg-black text-white dark:bg-zinc-50 dark:text-black">B</span>
               <span>Bloconnect</span>
             </Link>
             <nav className="flex items-center gap-4 text-sm">
-              <Link href="#how-it-works" className="transition-colors hover:opacity-80">How it works</Link>
-              <Link href="/artisans" className="transition-colors hover:opacity-80">Artisans</Link>
-              <Link href="/jobs" className="transition-colors hover:opacity-80">My Jobs</Link>
-              <Link href="/admin" className="transition-colors hover:opacity-80">Admin</Link>
+              <Link href="#how-it-works" className="transition-colors hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 rounded">How it works</Link>
+              <Link href="/artisans" className="transition-colors hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 rounded">Artisans</Link>
+              <Link href="/dashboard/artisan" className="transition-colors hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 rounded">Dashboard</Link>
+              <Link href="/jobs" className="transition-colors hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 rounded">My Jobs</Link>
+              <Link href="/admin" className="transition-colors hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/40 dark:focus-visible:ring-white/40 rounded">Admin</Link>
               <ThemeToggle />
             </nav>
           </header>
